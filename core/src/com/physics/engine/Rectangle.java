@@ -27,9 +27,8 @@ public class Rectangle {
 		System.out.println("ahhhh");
 	}
 	
-	/*
-	public Rectangle(int x, int xv, int y, int yv, int heightRec, int widthRec, int mass,
-			MassiveObjectCollisionWorld massiveObjectCollisionWorld) {
+	
+	public Rectangle(int x, int xv, int y, int yv, int heightRec, int widthRec, int mass, MassiveObjectCollisionWorld world) {
 		this.x = x;
 		this.y = y;
 		this.xv = xv;
@@ -38,11 +37,11 @@ public class Rectangle {
 		this.heightRec = heightRec;
 		this.mass = mass;
 	}
-	*/
+	
 	public void update() {
 		
 		if (movement == true) {
-			
+			System.out.println("ok");
 			x += xv;
 			y += yv;
 			checkXBounds(x);

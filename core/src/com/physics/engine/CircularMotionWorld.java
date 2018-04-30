@@ -16,22 +16,10 @@ public class CircularMotionWorld {
 		objects = new ArrayList<Object>();
 	}
 
-	public void setUp() {
-		
-		//sort out all of this for the values for the cm
-		
-		//float x, float y, int xv, int yv, int r, int mass
+	public void setUpRandom() {	
 		objects = new ArrayList<Object>();
-		//Scanner bucky = new Scanner(System.in);
-		
-		//char selection;
-		System.out.println("Press R for randomly generated objects and press U for user input data");
-		//selection = bucky.next().charAt(0);
-		//selection = Character.toUpperCase(selection);
-		
-		//if(selection == 'R') {
 			int objectNum = randInt(9, 10);
-			//int numObject = 1;
+
 			for(int i = 0; i < objectNum; i++) {
 				float x = randInt(300, 600);
 				float y = randInt(300, 600);
@@ -42,7 +30,11 @@ public class CircularMotionWorld {
 				createObject(x, y, v, v, r, mass);
 			}
 	}
-	/*} else {
+	
+	public void setUpUser(){
+		
+	
+		Scanner bucky = new Scanner(System.in);
 		
 		System.out.println("How many objects?");
 		
@@ -58,11 +50,8 @@ public class CircularMotionWorld {
 			System.out.println("Enter the starting y coordinate for the object ");
 			int y = bucky.nextInt();
 			
-			System.out.println("Enter the starting velocity in the x direction for rectangle ");
-			int xv = bucky.nextInt();
-		
-			System.out.println("Enter the starting velocity in the y direction for rectangle ");
-			int yv = bucky.nextInt();
+			System.out.println("Enter the starting velocity for the object");
+			int v = bucky.nextInt();
 			
 			System.out.println("Enter the radius of the object ");
 			int r = bucky.nextInt();
@@ -70,20 +59,19 @@ public class CircularMotionWorld {
 			System.out.println("Enter the mass of the object ");
 			int mass = bucky.nextInt();
 			
+			int xv = v;
+			int yv = v;
 			createObject(x, y, xv, yv, r, mass);
 			}
-			}
-			}
-		*/
-	
-	
+		}
+
 	private int randInt(int min, int max) {
 		return min + (int)(Math.random() * ((max - min) + 1));
 	}
 	
 	public void remove() {
-		for(int i = 0; i < objects.size(); i++) {
-			objects.remove(i);
+		for(int i = objects.size(); i > 0; i--) {
+			objects.remove((i-1));
 		}
 	}	
 	
@@ -93,7 +81,6 @@ public class CircularMotionWorld {
 		
 			double angleRight = 0;
 			double angleLeft = 0;
-			double angle = 0;
 			double d = 0;
 			
 			float x = objects.get(i).getx();
@@ -150,7 +137,6 @@ public class CircularMotionWorld {
 			if(x > cx && y < cy) {
 				xv = xv*Math.sin(angleRight);
 				yv = yv*Math.cos(angleRight);
-				System.out.println("real xv = " + xv);
 				x += xv;
 				y += yv;	
 			}

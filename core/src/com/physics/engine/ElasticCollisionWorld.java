@@ -12,7 +12,6 @@ import java.util.Scanner;
 
 public class ElasticCollisionWorld {
 
-	
 	private SpriteBatch batch;
 	boolean keyPressed;
 	Rectangle rect;
@@ -22,6 +21,8 @@ public class ElasticCollisionWorld {
 	PhysicsMain physMain;
 	private ArrayList<int[]> checkedPair;
 	int collisionCount;
+	int width = (int)(com.physics.engine.PhysicsMain.getWidth());
+	int height = (int) (com.physics.engine.PhysicsMain.getHeight());
 	public static ArrayList<Rectangle> rectangles;
 	
 	public ElasticCollisionWorld(Menu menu){
@@ -31,25 +32,6 @@ public class ElasticCollisionWorld {
 	public void setUpRandom() {
 		
 		rectangles = new ArrayList<Rectangle>();
-		//Scanner bucky = new Scanner(System.in);
-		
-		//char selection;
-	//	
-	//	batch = new SpriteBatch();
-
-		//BitmapFont font = new BitmapFont(Gdx.files.internal("text.fnt"));
-
-		
-		
-		//System.out.println("Press R for randomly generated rectangles and press U for user input data");
-		//selection = bucky.next().charAt(0);
-		//selection = Character.toUpperCase(selection);
-		
-		//if(selection == Keys.ESCAPE) {
-		//	menu.ecRunning = false;
-		//}
-		
-		//if(selection == 'R') {
 			int rectNum = randInt(9, 10);
 			for(int i = 0; i < rectNum; i++) {
 				int width = randInt(80, 120);
@@ -64,48 +46,12 @@ public class ElasticCollisionWorld {
 	}
 	
 	public void setUpUser() {
-		
+		rectangles = new ArrayList<Rectangle>();
 
-		//Scanner bucky = new Scanner(System.in);
-		//System.out.println("How many rectangles?");
+		Scanner bucky = new Scanner(System.in);
+		System.out.println("How many rectangles?");
 		
-		
-		//System.out.println("numRectz = " + numRect);
-		
-		System.out.println("interesting");
-		for(int i = 0; i < 5; i++) {
-			int width = randInt(80, 120);
-			int height = randInt(80, 120);
-			int x = randInt(0, 2300);
-			int y = randInt(0, 1100);
-			int xv = randInt(-8, 8);
-			int yv = randInt(-8, 8);
-			System.out.println("Very");
-			createRect(x, y, xv, yv, width, height);
-			System.out.println("REALLY?");
-			
-		}
-		
-		
-		
-		
-		
-		//int numRect;
-		
-		/*
-		batch.begin();
-
-		GlyphLayout layout = new GlyphLayout();
-		String str = "Press R for randomly generated rectangles and press U for user input data";
-
-		font.setColor(102/255f, 255/255f, 102/255f, 1f);
-		layout.setText(font, str);
-		font.draw(batch, str, 100, 100);
-
-		batch.end();	
-		
-		
-		numRect = bucky.nextInt();
+		int numRect = bucky.nextInt();
 		
 		for(int i = 0; i < numRect; i++) {
 		
@@ -129,7 +75,7 @@ public class ElasticCollisionWorld {
 			
 			createRect(x, y, xv, yv, width, height);
 			}
-			*/
+			
 		}
 	
 	private int randInt(int min, int max) {
@@ -148,30 +94,21 @@ public class ElasticCollisionWorld {
 		checkedPair = new ArrayList<int[]>();
 		if(keyPressed == false) {
 			for(int i = 0; i < rectangles.size(); i++) {
-			
 				for(int i2 = 0; i2 < rectangles.size(); i2++) {		
-				
 					if(i != i2 && checkPair(i, i2) == true) {
 						checkCollisions(i, i2);
-					
 						int[] pair = {i, i2};
 						checkedPair.add(pair);
 					}
-				
 				}
-			
 			}
-		
 		}
-		
 	}
 	
 	private boolean checkPair(int i, int i2) {
 		boolean valid = true;
-		
 		for(int i3 = 0; i3 < checkedPair.size(); i3++) {
 			int[] pair = checkedPair.get(i3);
-			
 			if((pair[0]) == i && (pair[1] == i2) || (pair[0] == i2 && pair[1] == i)){
 				valid = false;
 			}	
@@ -182,13 +119,16 @@ public class ElasticCollisionWorld {
 	private void printCollisionCount() {
 		batch = new SpriteBatch();
 		BitmapFont font = new BitmapFont(Gdx.files.internal("text.fnt"));
-		
 		batch.begin();
 		GlyphLayout layout = new GlyphLayout();
 		String str = "collision count = " + collisionCount;
 		font.setColor(0/255f, 0/255f, 0/255f, 1f);
 		layout.setText(font, str);
-		font.draw(batch, str, 1150, 1000);
+		float strWidth = layout.width;
+		float strHeight = layout.height;
+		int x = (int)((width / 2) - strWidth / 2);
+		int y = (int)((height / 2) - strHeight / 2);
+		font.draw(batch, str, x, y);
 		batch.end();
 	}
 	
@@ -230,13 +170,9 @@ public class ElasticCollisionWorld {
 			}
 		}
 		
-		
 		if(xRange && yRange == true) {
 			collisionCount ++;
-			
-			if(deltaX > deltaY) {
-				System.out.println("x col " + i + " " + i2);
-				
+			if(deltaX > deltaY) {	
 				if(x1 < x2) {
 					int overlap = width1 - deltaX;
 					rectangles.get(i).setxCollision(x1 - overlap/2);
@@ -246,10 +182,8 @@ public class ElasticCollisionWorld {
 					rectangles.get(i).setxCollision(x1 + overlap/2);
 					rectangles.get(i2).setxCollision(x2 - overlap/2);
 				}	
-				xCol(i, i2);
-				
+				xCol(i, i2);		
 			} else {
-				System.out.println("y col " + i + " " + i2);
 				if(y1 > y2) {
 					int overlap = height2 - deltaY;
 					rectangles.get(i).setyCollision(y1 + overlap/2);
@@ -280,38 +214,22 @@ public class ElasticCollisionWorld {
 		int tyv = yv;
 		rectangles.get(i).setyvObjectCollision(yv2);
 		rectangles.get(i2).setyvObjectCollision(tyv);	
-		
 	}
 	
 	public void update() {
-
 		for(int i = 0; i < rectangles.size(); i++) {
 			rectangles.get(i).update();
 		}
 		printCollisionCount();
-		collisionCheck();
-				
+		collisionCheck();		
 	}
 		
-	
 	public static float getRectSize(){
 		return rectangles.size();
 	}
 	
 	public void createRect(int x, int xv, int y, int yv, int widthRec, int heightRec){
-		System.out.println("huh  wow");
 		Rectangle rect = new Rectangle(x, xv, y, yv, heightRec, widthRec, this);
-		
-		
-		System.out.println("huh wot");
 		rectangles.add(rect); 
-		System.out.println("huh");
 	}
 }
-
-
-
-
-
-
-

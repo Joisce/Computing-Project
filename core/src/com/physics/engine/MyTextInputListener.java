@@ -21,7 +21,7 @@ public class MyTextInputListener implements TextInputListener {
 
    @Override
    public void input (String text) {
-	   menu.setRectNum(text);
+	  // menu.setRectNum(text);
    }
 
    //public void setVal() {

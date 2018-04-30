@@ -39,51 +39,7 @@ public class Object {
         objectRenderer.circle(PhysicsMain.getWidth() / 2, PhysicsMain.getHeight() / 2, 20);
         objectRenderer.end();
 	}
-	
-	public void renderString() {
 
-		System.out.println("right");
-		float length = 0;
-		float hm = 5;
-	
-		if(cx < x && cy < y) {
-			System.out.println("ok?");
-			float height = y - cy;
-			float width = x - cx;
-			length = (float)Math.sqrt((height*height)+(width*width));
-			System.out.println("interesting");
-		}
-		
-		if(cx > x && cy < y) {
-			System.out.println("ok?");
-			float height = y - cy;
-			float width = cx - x;
-			length = (float)Math.sqrt((height*height)+(width*width));
-			System.out.println("interesting");
-		}
-		
-		if(cx < x && cy > y) {
-			System.out.println("ok?");
-			float height = cy - y;
-			float width = x - cx;
-			length = (float)Math.sqrt((height*height)+(width*width));
-			System.out.println("interesting");
-		}
-		
-		if(cx > x && cy > y) {
-			System.out.println("ok?");
-			float height = cy - y;
-			float width = cx - x;
-			length = (float)Math.sqrt((height*height)+(width*width));
-			System.out.println("interesting");
-		}
-		System.out.println("x = " + x + " y = " + y + " length = " + length);
-		objectRenderer.setColor(Color.GRAY);
-        objectRenderer.rect(x, y, hm, length);
-	}
-	
-	
-	
 	public float getx() {
 		return x;
 	}

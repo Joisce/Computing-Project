@@ -9,7 +9,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class OrbitalMotionWorld {
 	
-
+	int width = (int)(com.physics.engine.PhysicsMain.getWidth());
+	int height = (int) (com.physics.engine.PhysicsMain.getHeight());
 	
 	public static ArrayList<Planet> planets;
 	Planet planet;
@@ -17,86 +18,67 @@ public class OrbitalMotionWorld {
 	private ArrayList<int[]> checkedPair;
 	int index = 0;
 	int index1 = 0;
-	public OrbitalMotionWorld() {
-		
-
-		 
+	public OrbitalMotionWorld() {	 
 		planets = new ArrayList<Planet>();
-	
 	}
 	
-	
-	
-	
-	public void setUp() {
-		//drawText();
-		Scanner bucky = new Scanner(System.in);
+	public void setUpRandom() {
 		
-		char selection;
-		System.out.println("Press R for randomly generated planets and press U for user input data");
-		selection = bucky.next().charAt(0);
-		selection = Character.toUpperCase(selection);
-		
-		//file:///C:/Users/richa/Desktop/test/core/assets/text.png
-		if(selection == 'R') {
-			int planetNum = randInt(9, 10);
+			int planetNum = randInt(3, 4);
 			for(int i = 0; i < planetNum; i++) {
 				int mass = randInt(1000000, 55000000);
 				int r = randInt(20, 20);
-				int x = randInt(0, 2300);
-				int y = randInt(0, 1100);
+				int x = randInt(0, width);
+				int y = randInt(0, height);
 				int xv = randInt(-2, 2);
 				int yv = randInt(-1, 2);
 				
 				createPlanet(x, y, xv, yv, r, mass);
 			}
 			
-		} else {
+		}
+	
+		public void setUpUser() {
 		
-		System.out.println("How many planets?");
+			
+			Scanner bucky = new Scanner(System.in);
+			
+			System.out.println("How many planets?");
 		
-		int numPlanets;
+			int numPlanets;
 		
-		numPlanets = bucky.nextInt();
+			numPlanets = bucky.nextInt();
 		
-		for(int i = 0; i < numPlanets; i++) {
+			for(int i = 0; i < numPlanets; i++) {
 		
-			System.out.println("Enter the x coordinate for planet " + (i + 1));
-			int x = bucky.nextInt();
-		
-			System.out.println("Enter the y coordinate for planet " + (i + 1));
-			int y = bucky.nextInt();
+				System.out.println("Enter the x coordinate for planet " + (i + 1));
+				int x = bucky.nextInt();
+				
+				System.out.println("Enter the y coordinate for planet " + (i + 1));
+				int y = bucky.nextInt();
 
-			System.out.println("Enter the starting velocity in the x direction for planet " + (i + 1));
-			int xv = bucky.nextInt();
+				System.out.println("Enter the starting velocity in the x direction for planet " + (i + 1));
+				int xv = bucky.nextInt();
 		
-			System.out.println("Enter the starting velocity in the y direction for planet " + (i + 1));
-			int yv = bucky.nextInt();
+				System.out.println("Enter the starting velocity in the y direction for planet " + (i + 1));
+				int yv = bucky.nextInt();
+				
+				System.out.println("Enter the radius of the planet " + (i + 1));
+				int r = bucky.nextInt();
 			
-			System.out.println("Enter the radius of the planet " + (i + 1));
-			int r = bucky.nextInt();
+				System.out.println("Enter the mass of the planet " + (i + 1));
+				int mass = bucky.nextInt();
 			
-			System.out.println("Enter the mass of the planet " + (i + 1));
-			int mass = bucky.nextInt();
+				createPlanet(x, y, xv, yv, r, mass);
 			
-			createPlanet(x, y, xv, yv, r, mass);
-			
+				}
 			}
-		}
+
 		
-		//createPlanet(700, 400, 0, 0, 20, 45000000);	//p2
-		//createPlanet(800, 800, -3, 0, 20, 1000000);  //p1
-		//createPlanet(700, 300, 0, 0, 20, 1000000);
-		//createPlanet(500, 1000, 0, 0, 20, 55000000);
-		}
 		
 		private int randInt(int min, int max) {
 			return min + (int)(Math.random() * ((max - min) + 1));
 		}
-	
-	
-	//The number of times each planet is rendered each frame is effected by how many planets there are
-	//interesting right?
 	
 	public void check() {
 		System.out.println("interesting 1");
@@ -144,7 +126,6 @@ public class OrbitalMotionWorld {
 	
 	public void removeAllPlanets(){
 		for(int i = planets.size(); i > 0; i--) {
-			System.out.println("i - 1 = " + (i-1));
 			planets.remove((i-1));
 		}
 	}
@@ -243,21 +224,11 @@ public class OrbitalMotionWorld {
 		
 		for(int i = 0; i < planets.size(); i++) {
 			double xv = planets.get(i).getxv();
-			System.out.println("i = " + i + " xv = " + xv);
-			System.out.println("WE ARE RENDINGERING!!!");
 			planets.get(i).render();
 			
 		}
 		
-		
-	//	batch = new SpriteBatch();
-		
-		
-		
-		
-		
 	}
-
 
 	private boolean validPair(int i, int i2) {
 		boolean validPair = false;
@@ -300,14 +271,3 @@ public class OrbitalMotionWorld {
 	}	
 	
 }
-
-
-
-
-
-
-
-
-
-
-

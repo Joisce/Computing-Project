@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Menu {
 	
-	//boolean keyPressed = false;
 	boolean oPressed = false;
 	boolean selection = false;
 	boolean cPressed = false;
@@ -18,14 +17,12 @@ public class Menu {
 	boolean omRunning = false;
 	boolean mocRunning = false;
 	boolean vals = false;
-	boolean pressed = false;
-	
 	
 	PhysicsMain PhysicsMain;
 	OrbitalMotionWorld omWorld;
 	ElasticCollisionWorld ecWorld = new ElasticCollisionWorld(this);
 	CircularMotionWorld cmWorld;
-	MassiveObjectCollisionWorld mocWorld;
+	MassiveObjectCollisionWorld mocWorld = new MassiveObjectCollisionWorld(this);
 	PhysicsMain physMain;
 	MyTextInputListener text;
 	
@@ -42,46 +39,7 @@ public class Menu {
 		cmWorld = new CircularMotionWorld();
 		ecWorld = new ElasticCollisionWorld(this);
 		omWorld = new OrbitalMotionWorld();
-		mocWorld = new MassiveObjectCollisionWorld();
-	}
-	
-	public void setRectNum(String rectNum) {
-		pressed = false;
-		num = Integer.parseInt(rectNum);
-		System.out.println("num = " + num);
-		//vals = false;
-		//pressed = false;
-		ecWorld.setUpRandom();
-		ecRunning = true;
-	}
-	
-	void EcU(){
-		
-		if (vals == false) {
-		Gdx.input.getTextInput(listener, "Dialog Title", "2", "");
-		vals = true;
-		}
-		
-		
-		
-		batch = new SpriteBatch();
-		int numRect = 1;
-		batch.begin();
-		GlyphLayout layout = new GlyphLayout();
-		String str = "Enter how many rectangles you want to have in the simulation";
-		String r = "Random";
-		String u = "User";
-		
-		
-		layout.setText(f, str);
-		float strWidth = layout.width;
-		int posX2 = (int) ((width / 2) - (strWidth / 2) );
-		int posY2 = (int) (height * 0.95);
-		f.setColor(0/255f, 0/255f, 0/255f, 1f);
-		f.draw(batch, str, posX2, posY2);
-		batch.end();
-		
-		
+		mocWorld = new MassiveObjectCollisionWorld(this);
 	}
 	
 	private void drawText() {
@@ -101,12 +59,14 @@ public class Menu {
 		String str = "Menu";
 		font.setColor(0/255f, 0/255f, 0/255f, 1f);
 		layout.setText(font, str);
-		int posX = (int) (width / 2);
-		int posY = (int) (height * 0.95);
+		float strWidth = layout.width;
+		float strHeight = layout.height;
+		int posX = (int) ((width / 2) - strWidth /2);
+		int posY = (int) ((height * 0.95) - strHeight);
 		font.draw(batch, str, posX, posY);
 		
-		//EC discription
-		String ecDiscription = "Click here for elastic collision simulation - A random or user selected number of rectangles colliding elasticly, without any loss of kinetic energy";
+		//EC description
+		String ecDiscription = "Click here for elastic collision simulation - A random number of rectangles colliding elasticly, without any loss of kinetic energy";
 		f.setColor(0/255f, 0/255f, 0/255f, 1f);
 		layout.setText(f, ecDiscription);
 		
@@ -136,7 +96,7 @@ public class Menu {
 		f.setColor(0/255f, 0/255f, 0/255f, 1f);
 		layout.setText(f, ecUDiscription);
 		int posX11 = (int) (width * 1/10);
-		int posY11 = (int) (height * 7.5/10);
+		int posY11 = (int) (height * 7.2/10);
 		
 		float strWidth11 = layout.width;
 		float strHeight11 = layout.height;
@@ -150,7 +110,8 @@ public class Menu {
 		if(x > posX11 && x < posX11 + strWidth11) {
 			if(y > posY11 && y < posY11 + strHeight11) {
 				if(Gdx.input.isTouched()) {	
-					pressed = true;
+					ecWorld.setUpUser();
+					ecRunning = true;
 				}
 			}
 		}
@@ -176,13 +137,39 @@ public class Menu {
 		if(x > posX2 && x < posX2 + strWidth2) {
 			if(y > posY2 && y < posY2 + strHeight2) {
 				if(Gdx.input.isTouched()) {
-					mocWorld.setUp();
+					mocWorld.setUpRandom();
 					mocRunning = true;
 				}
 			}
 		}
 		
 		f.draw(batch, mocDiscription, posX2, posY2);
+		
+		String mocUDiscription = "Clcik here for the massive body collision simulation but with user input data for the variables";
+		f.setColor(0/255f, 0/255f, 0/255f, 1f);
+		layout.setText(f, mocUDiscription);
+		int posX21 = (int) (width * 1/10);
+		int posY21 = (int) (height * 6.2/10);
+		
+		float strWidth21 = layout.width;
+		float strHeight21 = layout.height;
+		if(x > posX21 && x < posX21 + strWidth21) {
+			if(y > posY21 && y < posY21 + strHeight21) {
+				f.setColor(Color.GRAY);
+			}
+		}
+		
+		
+		if(x > posX21 && x < posX21 + strWidth21) {
+			if(y > posY21 && y < posY21 + strHeight21) {
+				if(Gdx.input.isTouched()) {	
+					mocWorld.setUpUser();
+					mocRunning = true;
+				}
+			}
+		}
+		
+		f.draw(batch, mocUDiscription, posX21, posY21);
 		
 		
 		//CM
@@ -204,13 +191,38 @@ public class Menu {
 		if(x > posX3 && x < posX3 + strWidth3) {
 			if(y > posY3 && y < posY3 + strHeight3) {
 				if(Gdx.input.isTouched()) {
-					cmWorld.setUp();
+					cmWorld.setUpRandom();
 					cmRunning = true;
 				}
 			}
 		}
 		
 		f.draw(batch, cmDiscription, posX3, posY3);
+		
+		String cmUDiscription = "Clcik here for the circular motion simulation but with user input data for the variables";
+		f.setColor(0/255f, 0/255f, 0/255f, 1f);
+		layout.setText(f, cmUDiscription);
+		int posX31 = (int) (width * 1/10);
+		int posY31 = (int) (height * 5.2/10);
+		
+		float strWidth31 = layout.width;
+		float strHeight31 = layout.height;
+		if(x > posX31 && x < posX31 + strWidth31) {
+			if(y > posY31 && y < posY31 + strHeight31) {
+				f.setColor(Color.GRAY);
+			}
+		}
+		
+		if(x > posX31 && x < posX31 + strWidth31) {
+			if(y > posY31 && y < posY31 + strHeight31) {
+				if(Gdx.input.isTouched()) {	
+					cmWorld.setUpUser();
+					cmRunning = true;
+				}
+			}
+		}
+		
+		f.draw(batch, cmUDiscription, posX31, posY31);
 		
 		
 		//OM 
@@ -229,7 +241,42 @@ public class Menu {
 			}
 		}
 		
+		if(x > posX4 && x < posX4 + strWidth4) {
+			if(y > posY4 && y < posY4 + strHeight4) {
+				if(Gdx.input.isTouched()) {
+					omWorld.setUpRandom();
+					omRunning = true;
+				}
+			}
+		}
+		
 		f.draw(batch, omDiscription, posX4, posY4);
+		
+		String omUDiscription = "Clcik here for the orbital motion simulation but with user input data for the variables";
+		f.setColor(0/255f, 0/255f, 0/255f, 1f);
+		layout.setText(f, omUDiscription);
+		int posX41 = (int) (width * 1/10);
+		int posY41 = (int) (height * 4.2/10);
+		
+		float strWidth41 = layout.width;
+		float strHeight41 = layout.height;
+		if(x > posX41 && x < posX41 + strWidth41) {
+			if(y > posY41 && y < posY41 + strHeight41) {
+				f.setColor(Color.GRAY);
+			}
+		}
+		
+		
+		if(x > posX41 && x < posX41 + strWidth41) {
+			if(y > posY41 && y < posY41 + strHeight41) {
+				if(Gdx.input.isTouched()) {	
+					omWorld.setUpUser();
+					omRunning = true;
+				}
+			}
+		}
+		
+		f.draw(batch, omUDiscription, posX41, posY41);
 		
 		batch.end();
 	}
@@ -237,22 +284,18 @@ public class Menu {
 	
 	public void menuScreen() {
 		
-		if(cmRunning == false && ecRunning == false && omRunning == false && mocRunning == false && pressed == false) {
+		if(cmRunning == false && ecRunning == false && omRunning == false && mocRunning == false) {
 			drawText();
-		}
-		
-		if(pressed == true) {
-			EcU();
 		}
 
 		if(cmRunning == false) {
 			if(Gdx.input.isKeyPressed(Keys.C)) {
-				cmWorld.setUp();
+				cmWorld.setUpRandom();
 				cmRunning = true;
 			}
 		}
 		
-		if(cmRunning== true) {
+		if(cmRunning == true) {
 			if(Gdx.input.isKeyPressed(Keys.ESCAPE)) {
 				cmWorld.remove();
 				cmRunning = false;
@@ -261,7 +304,7 @@ public class Menu {
 		
 		if(omRunning == false) {
 			if(Gdx.input.isKeyPressed(Keys.O)) {
-				omWorld.setUp();
+				omWorld.setUpRandom();
 				omRunning = true;
 			}
 		}
@@ -289,7 +332,7 @@ public class Menu {
 		
 		if(mocRunning == false) {
 			if(Gdx.input.isKeyPressed(Keys.M)) {
-				mocWorld.setUp();
+				mocWorld.setUpRandom();
 				mocRunning = true;
 			}
 		}
@@ -316,18 +359,5 @@ public class Menu {
 		if(mocRunning == true) {
 			mocWorld.update();
 		}
-		
-		if(selection == false) {
-			System.out.println("Press ENTER for elasric collision simulation - A random or user selected number of rectangles colliding elasticly, without any loss of kinetic energy");
-			System.out.println(" Press O for orbital motion simulation - A random or user selected number of planets orbiting a common center of mass");
-			System.out.println("Press C for circular motion simulator - An object of random or user selected mass at a fixed distance from a center point");
-			System.out.println("Press M for massive body collisions - A random or user selected number of rectangles of varing mass. All collisions, momentium is concerved");
-			selection = true;
-		}
-		
 	}
 }
-
-
-
-
